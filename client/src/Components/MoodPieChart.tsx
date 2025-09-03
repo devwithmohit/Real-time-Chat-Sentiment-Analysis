@@ -1,12 +1,12 @@
-import { Pie } from 'react-chartjs-2';
+import { Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   ArcElement,
   Tooltip,
   Legend,
-  type ChartOptions
-} from 'chart.js';
-import type { ChatMessage } from '../types/message';
+  type ChartOptions,
+} from "chart.js";
+import type { ChatMessage } from "../types/message";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -18,7 +18,7 @@ const MoodPieChart: React.FC<MoodPieChartProps> = ({ messages }) => {
   const sentimentCount = {
     positive: 0,
     negative: 0,
-    neutral: 0
+    neutral: 0,
   };
 
   messages.forEach((msg) => {
@@ -26,65 +26,72 @@ const MoodPieChart: React.FC<MoodPieChartProps> = ({ messages }) => {
   });
 
   const data = {
-    labels: ['Positive 😊', 'Negative 😠', 'Neutral 😐'],
+    labels: ["Positive 😊", "Negative 😠", "Neutral 😐"],
     datasets: [
       {
-        label: 'Mood Distribution',
+        label: "Mood Distribution",
         data: [
           sentimentCount.positive,
           sentimentCount.negative,
-          sentimentCount.neutral
+          sentimentCount.neutral,
         ],
         backgroundColor: [
-          'rgba(16, 185, 129, 0.8)',
-          'rgba(244, 63, 94, 0.8)',
-          'rgba(156, 163, 175, 0.8)'
+          "rgba(16, 185, 129, 0.8)",
+          "rgba(244, 63, 94, 0.8)",
+          "rgba(156, 163, 175, 0.8)",
         ],
         borderColor: [
-          'rgb(16, 185, 129)',
-          'rgb(244, 63, 94)',
-          'rgb(156, 163, 175)'
+          "rgb(16, 185, 129)",
+          "rgb(244, 63, 94)",
+          "rgb(156, 163, 175)",
         ],
         borderWidth: 3,
         hoverBackgroundColor: [
-          'rgba(16, 185, 129, 1)',
-          'rgba(244, 63, 94, 1)',
-          'rgba(156, 163, 175, 1)'
+          "rgba(16, 185, 129, 1)",
+          "rgba(244, 63, 94, 1)",
+          "rgba(156, 163, 175, 1)",
         ],
-        hoverBorderWidth: 4
-      }
-    ]
+        hoverBorderWidth: 4,
+      },
+    ],
   };
 
-  const options: ChartOptions<'pie'> = {
+  const options: ChartOptions<"pie"> = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'bottom',
-        labels: {
-          padding: 20,
-          usePointStyle: true,
-          font: {
-            size: 12,
-            weight:500
-          }
-        }
-      },
-      tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        titleColor: 'white',
-        bodyColor: 'white',
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        borderWidth: 1,
-        cornerRadius: 8,
-        displayColors: false
-      }
-    },
     animation: {
       animateRotate: true,
-      animateScale: true
-    }
+      animateScale: true,
+      duration: 1200, 
+      easing: "easeInOutQuart", 
+    },
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: {
+          padding: 15,
+          usePointStyle: true,
+          font: {
+            size: window.innerWidth < 640 ? 10 : 14,
+            weight: 600,
+          },
+          boxWidth: window.innerWidth < 640 ? 12 : 18,
+          color: "#374151",
+        },
+      },
+      tooltip: {
+        backgroundColor: "rgba(30, 41, 59, 0.95)",
+        titleColor: "#fff",
+        bodyColor: "#fff",
+        borderColor: "rgba(255,255,255,0.2)",
+        borderWidth: 1,
+        cornerRadius: 10,
+        displayColors: false,
+        titleFont: { size: 15, weight: "bold" },
+        bodyFont: { size: 13 },
+        padding: 10,
+      },
+    },
   };
 
   const totalMessages = messages.length;
@@ -102,14 +109,14 @@ const MoodPieChart: React.FC<MoodPieChartProps> = ({ messages }) => {
           )}
         </h3>
       </div>
-      
+
       <div className="p-6">
         {hasData ? (
           <>
             <div className="h-64 mb-6">
               <Pie data={data} options={options} />
             </div>
-            
+
             {/* Sentiment Breakdown */}
             <div className="space-y-3">
               <div className="flex items-center justify-between p-3 bg-emerald-50 rounded-lg">
@@ -118,27 +125,32 @@ const MoodPieChart: React.FC<MoodPieChartProps> = ({ messages }) => {
                   <span className="text-emerald-700 font-medium">Positive</span>
                 </div>
                 <span className="text-emerald-600 font-bold">
-                  {sentimentCount.positive} ({Math.round((sentimentCount.positive / totalMessages) * 100)}%)
+                  {sentimentCount.positive} (
+                  {Math.round((sentimentCount.positive / totalMessages) * 100)}
+                  %)
                 </span>
               </div>
-              
+
               <div className="flex items-center justify-between p-3 bg-rose-50 rounded-lg">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-rose-500 rounded-full"></div>
                   <span className="text-rose-700 font-medium">Negative</span>
                 </div>
                 <span className="text-rose-600 font-bold">
-                  {sentimentCount.negative} ({Math.round((sentimentCount.negative / totalMessages) * 100)}%)
+                  {sentimentCount.negative} (
+                  {Math.round((sentimentCount.negative / totalMessages) * 100)}
+                  %)
                 </span>
               </div>
-              
+
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
                   <span className="text-gray-700 font-medium">Neutral</span>
                 </div>
                 <span className="text-gray-600 font-bold">
-                  {sentimentCount.neutral} ({Math.round((sentimentCount.neutral / totalMessages) * 100)}%)
+                  {sentimentCount.neutral} (
+                  {Math.round((sentimentCount.neutral / totalMessages) * 100)}%)
                 </span>
               </div>
             </div>

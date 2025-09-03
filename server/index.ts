@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // ✅ Frontend port
+    origin: "http://localhost:5173", // Frontend port
     methods: ["GET", "POST"],
   },
 });
@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
   console.log(`🔌 New user connected: ${socket.id}`);
 
   socket.on("sendMessage", (data: { text: string }) => {
-    console.log("📨 Message received from frontend:", data.text); // <-- ✅ Add this
+    console.log("📨 Message received from frontend:", data.text); 
     const { text } = data;
 
     // Analyze sentiment
@@ -44,8 +44,7 @@ io.on("connection", (socket) => {
       score,
       createdAt: new Date().toISOString(),
     };
-    console.log("📤 Emitting message to clients:", message); // <-- ✅ Also log this
-    // Emit to all clients
+    console.log("📤 Emitting message to clients:", message); 
     io.emit("receiveMessage", message);
   });
 
